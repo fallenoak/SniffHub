@@ -1,0 +1,23 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: sniffhub_development
+  username: <%= ENV["SNIFFHUB_DATABASE_USER"] %>
+  password: <%= ENV["SNIFFHUB_DATABASE_PASSWORD"] %>
+  pool: <%= ENV["SNIFFHUB_DATABASE_POOL"] %>
+
+staging:
+  adapter: postgresql
+  encoding: unicode
+  database: sniffhub_staging
+  username: <%= ENV["SNIFFHUB_DATABASE_USER"] %>
+  password: <%= ENV["SNIFFHUB_DATABASE_PASSWORD"] %>
+  pool: <%= ENV["SNIFFHUB_DATABASE_POOL"] %>
+
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: sniffhub_production
+  username: <%= ENV["SNIFFHUB_DATABASE_USER"] %>
+  password: <%= ENV["SNIFFHUB_DATABASE_PASSWORD"] %>
+  pool: <%= ENV["SNIFFHUB_DATABASE_POOL"] %>
