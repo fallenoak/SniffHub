@@ -22,5 +22,11 @@ module SniffHub
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # Add vendor fonts to assets pipeline.
+    config.assets.paths << "#{Rails.root}/vendor/assets/fonts}"
+
+    # Add font extensions to compilable assets.
+    config.assets.precompile << /\.(?:svg|eot|woff|woff2|ttf)$/
   end
 end

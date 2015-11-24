@@ -21,6 +21,7 @@ $(function() {
     e.preventDefault();
 
     $('.upload-target').removeClass('dragover');
+    $('.upload-queue').removeClass('hidden');
 
     var dt = e.dataTransfer;
     var files = dt.files;
@@ -34,7 +35,7 @@ $(function() {
     var uploadDom = $($.parseHTML(uploadHtml));
 
     uploadDom.find('.file-name').text(file.name);
-    uploadDom.find('.file-size').text(file.size);
+    uploadDom.find('.file-size').text(filesize(file.size, { round: 1 }));
 
     $('.upload-target .upload-queue').append(uploadDom);
 
@@ -105,6 +106,6 @@ $(function() {
       progressContent = Math.round(progress * 100).toString() + '%';
     }
 
-    uploadDom.find('.progress').text(progressContent);
+    uploadDom.find('.upload-progress').text(progressContent);
   }
 });

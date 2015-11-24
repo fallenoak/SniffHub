@@ -1,27 +1,35 @@
+<h2>
+  Welcome to SniffHub
+</h2>
+
 <div class="upload-target">
   <p>
-    Drag a sniff file on to this box to upload it to SniffHub.
+    Drag sniff files here to upload to SniffHub.
   </p>
 
-  <div class="upload-queue">
+  <div class="upload-queue hidden">
     <template>
       <div class="upload">
         <form action="http://localhost:8080/" method="POST" enctype="multipart/form-data" data-upload-param="upload">
           <div class="metadata">
-            <input type="hidden" name="uploader_token" value="123456" />
+            <input type="hidden" name="uploader_token" value="<%= current_user.uploader_token %>" />
           </div>
 
-          <div class="file-name">
-            Loading...
-          </div>
+          <table class="table">
+            <tr>
+              <td class="file-name">
+                Loading...
+              </td>
 
-          <div class="file-size">
-            0
-          </div>
+              <td class="file-size">
+                0
+              </td>
 
-          <div class="progress">
-            0%
-          </div>
+              <td class="upload-progress">
+                0%
+              </td>
+            </tr>
+          </table>
         </form>
       </div>
     </template>

@@ -1,0 +1,4 @@
+// Vendor JS
+//
+//= require filesize
+//
