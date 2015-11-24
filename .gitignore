@@ -14,14 +14,12 @@
 .DS_Store
 /.idea
 
-# Ignore all uploads.
-/uploads/*
-!/uploads/.keep
-
-# Ignore all captures.
-/captures/*
-!/captures/.keep
-
-# Ignore all work.
-/work/*
-!/work/.keep
+# Ignore all data files.
+/data/uploads/*
+!/data/uploads/.keep
+/data/work/*
+!/data/work/.keep
+/data/captures/*
+!/data/captures/.keep
+/data/lifter/*
+!/data/lifter/.keep
