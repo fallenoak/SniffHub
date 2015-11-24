@@ -11,7 +11,7 @@
 /tmp
 
 # Ignore OS and IDE files.
-/.DS_Store
+.DS_Store
 /.idea
 
 # Ignore all uploads.
