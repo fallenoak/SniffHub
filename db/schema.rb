@@ -46,13 +46,13 @@ ActiveRecord::Schema.define(version: 20151120183638) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",          null: false
-    t.string   "name",           null: false
-    t.string   "password"
+    t.string   "email",           null: false
+    t.string   "name",            null: false
+    t.string   "hashed_password"
     t.string   "external_auth"
     t.string   "uploader_token"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
 end

@@ -1,0 +1,16 @@
+<nav class="navbar navbar-default" id="primary-nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">SniffHub</a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+      <% if current_user? %>
+        <li><%= link_to('Log Out', '/logout', method: :delete) %></li>
+      <% else %>
+        <li><%= link_to('Log In', '/login') %></li>
+        <li><%= link_to('Register', '/register') %></li>
+      <% end %>
+    </ul>
+  </div>
+</nav>

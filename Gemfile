@@ -7,6 +7,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'therubyracer', '0.12.2', platforms: :ruby
 gem 'jbuilder', '~> 2.0'
 gem 'sidekiq', '4.0.1'
+gem 'bcrypt', '~> 3.1'
 
 gem 'jquery-rails'
 
