@@ -1,4 +1,4 @@
-gem 'lifter', '0.1.1'
+gem 'lifter', '0.1.2'
 require 'lifter'
 
 server = Lifter::Server.new do |config|
