@@ -3,5 +3,5 @@ en:
     authentication_error: "Your email address or password was incorrect."
 
   registration:
-    password_too_short: "Your password was too short."
-    password_confirmation_mismatch: "Your password confirmation did not match."
+    password_too_short: "was too short"
+    password_confirmation_mismatch: "did not match password"

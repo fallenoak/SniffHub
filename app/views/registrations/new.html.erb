@@ -14,26 +14,32 @@
           <div class="form-group">
             <label for="user-email">Email *</label>
             <input type="email" class="form-control" id="user-email" name="user[email]" placeholder="" value="<%= @user.email %>" />
+            <%= field_error(@user, :email) %>
           </div>
 
           <div class="form-group">
-            <label for="user-password">Display Name *</label>
+            <label for="user-name">Display Name *</label>
             <input type="text" class="form-control" id="user-name" name="user[name]" placeholder="" value="<%= @user.name %>" />
+            <%= field_error(@user, :name) %>
           </div>
 
           <div class="form-group">
             <label for="user-password">Password *</label>
             <input type="password" class="form-control" id="user-password" name="user[password]" placeholder="" value="<%= @user.password %>" />
+            <%= field_error(@user, :password) %>
           </div>
 
           <div class="form-group">
-            <label for="user-password">Confirm Password *</label>
+            <label for="user-password-confirmation">Confirm Password *</label>
             <input type="password" class="form-control" id="user-password-confirmation" name="user[password_confirmation]" placeholder="" value="<%= @user.password_confirmation %>" />
+            <%= field_error(@user, :password_confirmation) %>
           </div>
 
           <%= form_authenticity_tag %>
 
-          <button type="submit" class="btn btn-default">Register</button>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Register</button>
+          </div>
         </form>
       </div>
     </div>

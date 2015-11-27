@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   has_many :uploads
   has_many :captures
 
+  validates :email, presence: true, length: { minimum: 3 }
+  validates :name, presence: true, length: { minimum: 3, maximum: 12 }
   validate :validate_password
 
   before_save :hash_password
@@ -63,7 +65,7 @@ class User < ActiveRecord::Base
     end
 
     if self.password.to_s != self.password_confirmation.to_s
-      self.errors.add(:password, I18n.t('registration.password_confirmation_mismatch'))
+      self.errors.add(:password_confirmation, I18n.t('registration.password_confirmation_mismatch'))
     end
   end
 
