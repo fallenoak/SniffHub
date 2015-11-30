@@ -21,11 +21,14 @@ ActiveRecord::Schema.define(version: 20151120183638) do
     t.integer  "user_id",            null: false
     t.string   "original_file_name", null: false
     t.string   "file_name",          null: false
+    t.string   "file_type",          null: false
     t.string   "file_path",          null: false
     t.integer  "file_size",          null: false
     t.string   "file_digest",        null: false
-    t.string   "format_version"
     t.string   "client_build"
+    t.string   "client_locale"
+    t.string   "format_version"
+    t.datetime "capture_time"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
   end
@@ -34,6 +37,7 @@ ActiveRecord::Schema.define(version: 20151120183638) do
     t.integer  "user_id",                            null: false
     t.string   "original_file_name",                 null: false
     t.string   "file_name",                          null: false
+    t.string   "file_type",                          null: false
     t.string   "file_path",                          null: false
     t.integer  "file_size",                          null: false
     t.string   "file_digest",                        null: false

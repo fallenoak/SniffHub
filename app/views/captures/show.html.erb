@@ -1,0 +1,119 @@
+<div id="show-capture" class="page-container">
+  <ol class="breadcrumb">
+    <li><a href="/">SniffHub</a></li>
+    <li><a href="/uploads">Sniffs</a></li>
+    <li class="active"><%= @capture.original_file_name %></li>
+  </ol>
+
+  <div class="page-header">
+    <h1>
+      View Sniff
+      <span class="record-id">ID: <%= @capture.id %></span>
+    </h1>
+  </div>
+
+  <div class="page-section file-overview">
+    <h3>
+      File Overview
+    </h3>
+
+    <div class="row">
+      <div class="facts">
+        <div class="col-md-6">
+          <div class="fact-block">
+            <table class="table table-striped">
+              <tr>
+                <td class="fact-label">Uploader</td>
+                <td class="fact-value"><%= @capture.user.name %></td>
+              </tr>
+
+              <tr>
+                <td class="fact-label">Upload Source</td>
+                <td class="fact-value"><%= link_to(@capture.upload.original_file_name, "/uploads/#{@capture.upload.id}") %></td>
+              </tr>
+
+              <tr>
+                <td class="fact-label">File Size</td>
+                <td class="fact-value"><%= number_to_human_size(@capture.file_size) %></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="fact-block">
+            <table class="table table-striped">
+              <tr>
+                <td class="fact-label">File Name</td>
+                <td class="fact-value"><%= @capture.original_file_name %></td>
+              </tr>
+
+              <tr>
+                <td class="fact-label">SHA-256 Digest</td>
+                <td class="fact-value"><%= @capture.file_digest %></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-section capture-overview">
+    <h3>
+      Sniff Overview
+    </h3>
+
+    <div class="row">
+      <div class="facts">
+        <div class="col-md-6">
+          <div class="fact-block">
+            <table class="table table-striped">
+              <tr>
+                <td class="fact-label">Sniffed At</td>
+                <td class="fact-value"><%= @capture.capture_time %></td>
+              </tr>
+
+              <tr>
+                <td class="fact-label">Client Build</td>
+                <td class="fact-value"><%= @capture.client_build %></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="fact-block">
+            <table class="table table-striped">
+              <tr>
+                <td class="fact-label">Client Locale</td>
+                <td class="fact-value"><%= @capture.client_locale || 'N/A' %></td>
+              </tr>
+
+              <tr>
+                <td class="fact-label">Sniff Format</td>
+                <td class="fact-value"><%= @capture.file_type.upcase %> <%= @capture.format_version %></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-section capture-tools">
+    <h3>
+      Tools
+    </h3>
+
+    <div>
+      <form>
+        <button class="btn btn-default">Download Sniff</button>
+      </form>
+
+      <form>
+        <button class="btn btn-default">Download WPP Output</button>
+      </form>
+    </div>
+  </div>
+</div>

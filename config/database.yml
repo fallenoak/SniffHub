@@ -14,7 +14,7 @@ staging:
   password: <%= ENV["SNIFFHUB_DATABASE_PASSWORD"] %>
   pool: <%= ENV["SNIFFHUB_DATABASE_POOL"] %>
 
-development:
+production:
   adapter: postgresql
   encoding: unicode
   database: sniffhub_production

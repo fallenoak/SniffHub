@@ -7,4 +7,12 @@ module ApplicationHelper
     return if record.errors[attribute].empty?
     content_tag(:div, "#{record.errors.full_messages_for(attribute).first}.", class: 'field-error')
   end
+
+  def primary_nav_classes(section)
+    classes = []
+
+    classes << 'active' if page[:primary_nav] == section
+
+    classes.join(' ')
+  end
 end

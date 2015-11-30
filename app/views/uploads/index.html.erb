@@ -1,0 +1,44 @@
+<div id="uploads-index" class="page-container">
+  <ol class="breadcrumb">
+    <li><a href="/">SniffHub</a></li>
+    <li class="active">Uploads</li>
+  </ol>
+
+  <div class="page-header">
+    <h1>
+      All Uploads
+    </h1>
+  </div>
+
+  <div class="page-section all-uploads">
+    <table class="table table-striped">
+      <th>
+        File Name
+      </th>
+
+      <th>
+        Uploaded At
+      </th>
+
+      <th>
+        Contained Sniffs
+      </th>
+
+      <% @uploads.order('original_file_name ASC').each do |upload| %>
+        <tr>
+          <td>
+            <%= link_to(upload.original_file_name, "/uploads/#{upload.id}") %>
+          </td>
+
+          <td>
+            <%= upload.created_at %>
+          </td>
+
+          <td>
+            <%= upload.captures.count %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

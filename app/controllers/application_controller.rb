@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user, :current_user?
 
+  helper_method :page
+
+  before_action :require_user
+
   def current_user
     return @current_user if !@current_user.nil?
     return nil if session[:current_user_id].nil?
@@ -16,5 +20,17 @@ class ApplicationController < ActionController::Base
 
   def current_user?
     !current_user.nil?
+  end
+
+  def require_user
+    if !current_user?
+      session[:login_redirect] = request.original_url
+      redirect_to('/login')
+      return
+    end
+  end
+
+  def page
+    @page ||= {}
   end
 end

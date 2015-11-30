@@ -1,4 +1,6 @@
 class RegistrationsController < ApplicationController
+  skip_before_action :require_user
+
   def new
     # Only guests can register.
     if current_user?

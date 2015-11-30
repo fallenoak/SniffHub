@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
   root 'welcome#index'
 
+  # Captures
+  get '/captures', to: 'captures#index'
+  get '/captures/:id', to: 'captures#show'
+
   # Uploads
-  post '/uploads/authorize'
-  post '/uploads/complete'
+  get '/uploads', to: 'uploads#index'
+  post '/uploads/authorize', to: 'uploads#authorize'
+  post '/uploads/complete', to: 'uploads#complete'
+  get '/uploads/:id', to: 'uploads#show'
 
   # Sessions
   get '/login', to: 'sessions#new'

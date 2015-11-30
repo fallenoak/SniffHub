@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  skip_before_action :require_user
+
   def new
     # Only guests can log in.
     if current_user?
@@ -24,7 +26,12 @@ class SessionsController < ApplicationController
     @current_user = @user
     session[:current_user_id] = current_user.id
 
-    redirect_to('/')
+    if session[:login_redirect].nil?
+      redirect_to('/')
+    else
+      login_redirect = session.delete(:login_redirect)
+      redirect_to(login_redirect)
+    end
   end
 
   def destroy

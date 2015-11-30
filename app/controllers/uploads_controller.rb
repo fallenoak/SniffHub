@@ -2,6 +2,19 @@ require 'fileutils'
 
 class UploadsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i(authorize complete)
+  skip_before_action :require_user, only: %i(authorize complete)
+
+  def index
+    page[:primary_nav] = :uploads
+
+    @uploads = Upload
+  end
+
+  def show
+    page[:primary_nav] = :uploads
+
+    @upload = Upload.find(params[:id])
+  end
 
   # Handle authorize webhook from Lifter.
   def authorize
@@ -16,6 +29,12 @@ class UploadsController < ApplicationController
 
     upload = user.uploads.new
     upload.file_digest = params[:upload][:file_hash]
+    upload.file_type = Upload.infer_file_type(params[:upload][:file_name])
+
+    if upload.file_type.nil?
+      render(status: 422, json: { reason: 'invalid_file_type' }, layout: false)
+      return
+    end
 
     current_path = params[:upload][:file_path]
     target_path = upload.full_path
@@ -34,9 +53,12 @@ class UploadsController < ApplicationController
 
     begin
       upload.save!
-    rescue => e
+    rescue ActiveRecord::RecordInvalid => e
       # Database save failed, so return file to original path.
       FileUtils.mv(target_path, current_path)
+
+      render(status: 422, json: { reason: 'record_invalid' }, layout: false)
+      return
     end
 
     # Kick off async processing job.

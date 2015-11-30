@@ -15,12 +15,15 @@ class UploadProcessingWorker
   end
 
   private def process(upload)
-    prologue = upload.prologue(4)
-
-    if prologue[0, 2] == GZIP_MAGIC
-      handle_gzip_upload(upload.original_file_name, upload.full_path, upload)
-    elsif prologue[0, 3] == PKT_MAGIC
-      handle_single_capture(upload.original_file_name, upload.full_path, upload)
+    case upload.file_type
+    when 'tgz'
+      handle_tgz_upload(upload)
+    when 'gz'
+      handle_gz_upload(upload)
+    when 'pkt'
+      handle_pkt_upload(upload)
+    when 'bin'
+      handle_bin_upload(upload)
     end
 
     if upload.captures.count == 0
@@ -32,38 +35,47 @@ class UploadProcessingWorker
     upload.save!
   end
 
-  private def handle_gzip_upload(original_file_name, file_path, upload)
-    extracted_path = "#{WORK_DIR}/#{upload.upload_digest}"
+  private def handle_tgz_upload(upload)
+    archive_dir = "#{WORK_DIR}/archive/#{upload.file_digest}"
+    FileUtils.mkdir_p(archive_dir) if !File.exist?(archive_dir)
+
+    untar_cmd = "tar xf #{upload.full_path} -C #{archive_dir}"
+    untar_ouput = `#{untar_cmd}`
+
+    handle_extracted_archive(upload, archive_dir)
+  end
+
+  private def handle_gz_upload(upload)
+    original_file_type = upload.original_file_name.split('.')[-2]
+    extracted_path = "#{WORK_DIR}/#{upload.file_digest}.#{original_file_type}"
+
     gunzip_cmd = "gunzip #{upload.full_path} -c > #{extracted_path}"
     gunzip_output = `#{gunzip_cmd}`
 
-    extracted_file = File.open(extracted_path, 'rb')
-    extracted_prologue = extracted_file.read(4)
-    extracted_file.close
-
-    # Check if sniff. If not, try treat as tar.
-    if extracted_prologue[0, 3] == "PKT"
-      handle_single_capture(original_file_name, extracted_path, upload)
-    else
-      handle_tar_upload(extracted_path, upload)
-    end
-
-    # Remove work file.
-    FileUtils.rm(extracted_path)
+    handle_single_capture(upload, upload.original_file_name, extracted_path)
   end
 
-  private def handle_tar_upload(file_path, upload)
-    FileUtils.mkdir("#{WORK_DIR}/archive") if !File.exist?("#{WORK_DIR}/archive")
+  private def handle_pkt_upload(upload)
+    handle_single_capture(upload, upload.original_file_name, upload.full_path)
+  end
 
-    archive_dir = "#{WORK_DIR}/archive/#{upload.upload_digest}"
-    FileUtils.mkdir(archive_dir) if !File.exist?(archive_dir)
+  private def handle_bin_upload(upload)
+    handle_single_capture(upload, upload.original_file_name, upload.full_path)
+  end
 
-    untar_cmd = "tar xvf #{file_path} -C #{archive_dir}"
-    untar_ouput = `#{untar_cmd}`
+  private def handle_extracted_archive(upload, archive_dir)
+    archived_file_paths = Dir.glob("#{archive_dir}/**/*")
 
-    archived_file_paths = Dir.glob("#{archive_dir}/**/*").map do |archived_file_path|
+    # Valid files in archive must:
+    # - not be a directory
+    # - end with .pkt or .bin
+    # - be at least MINIMUM_CAPTURE_SIZE bytes long
+    archived_file_paths.map! do |archived_file_path|
       next if !File.file?(archived_file_path)
+      next if !(archived_file_path.end_with?('.pkt') || archived_file_path.end_with?('.bin'))
       next if File.size(archived_file_path) < MINIMUM_CAPTURE_SIZE
+
+      archived_file_path
     end
 
     archived_file_paths.compact!
@@ -75,32 +87,56 @@ class UploadProcessingWorker
 
     archived_file_paths.each do |archived_file_path|
       original_file_name = archived_file_path.split('/').last
-      handle_single_capture(original_file_name, archived_file_path)
+      handle_single_capture(upload, original_file_name, archived_file_path)
     end
 
     # Remove archive dir.
     FileUtils.remove_dir(archive_dir, true)
   end
 
-  private def handle_single_capture(original_file_name, file_path, upload)
-    capture_file = File.open(file_path, 'rb')
-    capture_prologue = capture_file.read(4)
-    capture_file.close
+  private def handle_single_capture(upload, original_file_name, file_path)
+    file_type = file_path.split('.').last.downcase.strip
 
-    # Skip if not a proper packet capture file.
-    return if capture_prologue[0, 3] != PKT_MAGIC
+    # Ensure we have an acceptable file type.
+    if Capture.infer_file_type(file_path).nil?
+      # TODO logging
+
+      FileUtils.rm(file_path)
+      return
+    end
+
+    # Ensure we can open with capture parser.
+    begin
+      parser = WOW::Capture::Parser.new(file_path)
+    rescue StandardError => e
+      # TODO logging
+
+      FileUtils.rm(file_path)
+      return
+    end
 
     file_digest = Digest::SHA2.file(file_path).hexdigest
 
     capture = Capture.new
+
     capture.upload = upload
     capture.user = upload.user
+
     capture.original_file_name = original_file_name
     capture.file_name = file_digest
+    capture.file_type = Capture.infer_file_type(file_path)
     capture.file_digest = file_digest
     capture.file_path = capture.full_path
     capture.file_size = File.size(file_path)
+
+    capture.client_build = parser.client_build
+    capture.client_locale = parser.client_locale
+    capture.format_version = parser.format_version
+    capture.capture_time = parser.start_time
+
     capture.save!
+
+    parser.close
 
     # Ensure directory tree is established.
     capture_dir = capture.full_path.split('/')[0...-1].join('/')

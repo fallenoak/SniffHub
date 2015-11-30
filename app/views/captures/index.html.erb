@@ -1,0 +1,61 @@
+<div id="captures-index" class="page-container">
+  <ol class="breadcrumb">
+    <li><a href="/">SniffHub</a></li>
+    <li class="active">Sniffs</li>
+  </ol>
+
+  <div class="page-header">
+    <h1>
+      All Sniffs
+    </h1>
+  </div>
+
+  <div class="page-section all-captures">
+    <table class="table table-striped">
+      <th>
+        File Name
+      </th>
+
+      <th>
+        Sniffed At
+      </th>
+
+      <th>
+        Client Build
+      </th>
+
+      <th>
+        Client Locale
+      </th>
+
+      <th>
+        Sniff Type
+      </th>
+
+      <% @captures.order('original_file_name ASC').each do |capture| %>
+        <tr>
+          <td>
+            <%= link_to(capture.original_file_name, "/captures/#{capture.id}") %>
+          </td>
+
+          <td>
+            <%= capture.capture_time %>
+          </td>
+
+          <td>
+            <%= capture.client_build %>
+          </td>
+
+          <td>
+            <%= capture.client_locale || 'N/A' %>
+          </td>
+
+          <td>
+            <%= capture.file_type.upcase %>
+            <% if !capture.format_version.nil? %><%= capture.format_version %><% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

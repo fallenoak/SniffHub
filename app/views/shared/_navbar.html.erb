@@ -4,6 +4,12 @@
       <a class="navbar-brand" href="/">SniffHub</a>
     </div>
 
+    <ul class="nav navbar-nav navbar-left">
+      <li class="<%= primary_nav_classes(:home) %>"><%= link_to('Home', '/') %></li>
+      <li class="<%= primary_nav_classes(:captures) %>"><%= link_to('Sniffs', '/captures') %></li>
+      <li class="<%= primary_nav_classes(:uploads) %>"><%= link_to('Uploads', '/uploads') %></li>
+    </ul>
+
     <ul class="nav navbar-nav navbar-right">
       <% if current_user? %>
         <li><%= link_to('Log Out', '/logout', method: :delete) %></li>
