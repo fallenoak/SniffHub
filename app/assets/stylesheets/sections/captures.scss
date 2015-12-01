@@ -1,3 +1,11 @@
+#page-captures-index table .file-name {
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 30%;
+}
+
 #page-show-capture .capture-tools form {
   display: inline-block;
   margin-right: 10px;

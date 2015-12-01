@@ -38,27 +38,27 @@
 
       <% @captures.order('original_file_name ASC').each do |capture| %>
         <tr>
-          <td>
+          <td class="file-name" title="<%= capture.original_file_name %>">
             <%= link_to(capture.original_file_name, "/captures/#{capture.id}") %>
           </td>
 
-          <td>
+          <td class="captured-at">
             <%= capture.captured_at %>
           </td>
 
-          <td>
+          <td class="uploaded-at">
             <%= capture.uploaded_at %>
           </td>
 
-          <td>
+          <td class="client-build">
             <%= capture.client_build %>
           </td>
 
-          <td>
+          <td class="client-locale">
             <%= capture.client_locale || 'N/A' %>
           </td>
 
-          <td>
+          <td class="capture-type">
             <%= capture.file_type.upcase %>
             <% if !capture.format_version.nil? %><%= capture.format_version %><% end %>
           </td>

@@ -26,15 +26,15 @@
 
       <% @uploads.order('original_file_name ASC').each do |upload| %>
         <tr>
-          <td>
+          <td class="file-name">
             <%= link_to(upload.original_file_name, "/uploads/#{upload.id}") %>
           </td>
 
-          <td>
+          <td class="uploaded-at">
             <%= upload.uploaded_at %>
           </td>
 
-          <td>
+          <td class="captures-count">
             <%= upload.captures.count %>
           </td>
         </tr>
