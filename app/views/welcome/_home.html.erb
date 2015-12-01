@@ -56,15 +56,15 @@
 
     <% @recent_uploads.each do |upload| %>
       <tr>
-        <td>
+        <td class="uploaded-at">
           <%= upload.created_at %>
         </td>
 
-        <td>
+        <td class="file-name">
           <%= link_to(upload.original_file_name, "/uploads/#{upload.id}") %>
         </td>
 
-        <td>
+        <td class="captures-count">
           <%= upload.captures.count %>
         </td>
       </tr>
