@@ -37,7 +37,7 @@ $(function() {
     uploadDom.find('.file-name').text(file.name);
     uploadDom.find('.file-size').text(filesize(file.size, { round: 1 }));
 
-    $('.upload-target .upload-queue').append(uploadDom);
+    $('.upload-target .upload-queue').prepend(uploadDom);
 
     // Grab handle to form DOM.
     var formDom = uploadDom.find('form');
@@ -102,10 +102,17 @@ $(function() {
 
     if (progress >= 100.0) {
       progressContent = 'Complete!';
+      progressState = 'completed';
     } else {
       progressContent = Math.round(progress * 100).toString() + '%';
+      progressState = 'in-progress';
     }
 
     uploadDom.find('.upload-progress').text(progressContent);
+
+    uploadDom.removeClass('completed');
+    uploadDom.removeClass('in-progress');
+
+    uploadDom.addClass(progressState);
   }
 });

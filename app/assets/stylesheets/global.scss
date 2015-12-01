@@ -120,13 +120,24 @@
 
 .uploader .upload-queue .file-name {
   width: 70%;
-  font-weight: bold;
+  color: #333;
 }
 
 .uploader .upload-queue .file-size {
   width: 15%;
+  color: #333;
 }
 
 .uploader .upload-queue .upload-progress {
   width: 15%;
+  color: #333;
+}
+
+.uploader .upload-queue .upload.completed .file-name,
+.uploader .upload-queue .upload.completed .file-size {
+  color: #888;
+}
+
+.uploader .upload-queue .upload.completed .upload-progress {
+  color: #333;
 }
