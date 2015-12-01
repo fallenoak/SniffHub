@@ -8,11 +8,15 @@ class SessionsController < ApplicationController
       return
     end
 
+    page[:primary_nav] = :login
+
     @user = User.new
   end
 
   def create
     params.require(:user).permit(:email, :password)
+
+    page[:primary_nav] = :login
 
     begin
       @user = User.authenticate!(params[:user][:email], params[:user][:password])

@@ -8,11 +8,15 @@ class RegistrationsController < ApplicationController
       return
     end
 
+    page[:primary_nav] = :register
+
     @user = User.new
   end
 
   def create
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
+
+    page[:primary_nav] = :register
 
     @user = User.new
 
