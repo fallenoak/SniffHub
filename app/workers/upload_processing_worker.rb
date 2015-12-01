@@ -150,7 +150,9 @@ class UploadProcessingWorker
     capture.client_build = parser.client_build
     capture.client_locale = parser.client_locale
     capture.format_version = parser.format_version
-    capture.capture_time = parser.start_time
+
+    capture.captured_at = parser.start_time
+    capture.uploaded_at = upload.uploaded_at
 
     capture.save!
 

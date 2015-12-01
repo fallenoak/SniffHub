@@ -61,11 +61,11 @@
 
     <table class="table table-striped">
       <th>
-        Sniffed At
+        File Name
       </th>
 
       <th>
-        File Name
+        Sniffed At
       </th>
 
       <th>
@@ -83,11 +83,11 @@
       <% @upload.captures.each do |capture| %>
         <tr>
           <td>
-            <%= capture.capture_time %>
+            <%= link_to(capture.original_file_name, "/captures/#{capture.id}") %>
           </td>
 
           <td>
-            <%= link_to(capture.original_file_name, "/captures/#{capture.id}") %>
+            <%= capture.captured_at %>
           </td>
 
           <td>

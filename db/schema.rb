@@ -28,7 +28,8 @@ ActiveRecord::Schema.define(version: 20151120183638) do
     t.string   "client_build"
     t.string   "client_locale"
     t.string   "format_version"
-    t.datetime "capture_time"
+    t.datetime "captured_at"
+    t.datetime "uploaded_at"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
   end
@@ -45,6 +46,7 @@ ActiveRecord::Schema.define(version: 20151120183638) do
     t.boolean  "unsupported",        default: false, null: false
     t.boolean  "deleted",            default: false, null: false
     t.boolean  "processed",          default: false, null: false
+    t.datetime "uploaded_at"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
   end

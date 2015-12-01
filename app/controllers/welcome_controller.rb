@@ -12,7 +12,7 @@ class WelcomeController < ApplicationController
   end
 
   private def load_home
-    @recent_uploads = current_user.uploads.order('created_at DESC').limit(5)
+    @recent_uploads = current_user.uploads.order('uploads.uploaded_at DESC').limit(5)
   end
 
   private def load_welcome

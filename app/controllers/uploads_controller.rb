@@ -30,6 +30,7 @@ class UploadsController < ApplicationController
     upload = user.uploads.new
     upload.file_digest = params[:upload][:file_hash]
     upload.file_type = Upload.infer_file_type(params[:upload][:file_name])
+    upload.uploaded_at = Time.now
 
     if upload.file_type.nil?
       render(status: 422, json: { reason: 'invalid_file_type' }, layout: false)

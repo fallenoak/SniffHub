@@ -14,7 +14,9 @@ class CreateCaptures < ActiveRecord::Migration
       t.string      :client_build,        null: true
       t.string      :client_locale,       null: true
       t.string      :format_version,      null: true
-      t.timestamp   :capture_time,        null: true
+
+      t.timestamp   :captured_at,         null: true
+      t.timestamp   :uploaded_at,         null: true
 
       t.timestamps null: false
     end
