@@ -10,6 +10,9 @@ class UploadProcessingWorker
   def perform(upload_id)
     Upload.transaction do
       upload = Upload.where(id: upload_id).lock('FOR UPDATE').first!
+
+      logger.info("Processing upload (upload_id: #{upload_id}; file_type: #{upload.file_type})")
+
       process(upload)
     end
   end
@@ -26,6 +29,9 @@ class UploadProcessingWorker
       handle_bin_upload(upload)
     end
 
+    logger.info("Identified #{upload.captures.count} captures within upload" <<
+      " (upload_id: #{upload.id})")
+
     if upload.captures.count == 0
       upload.unsupported = true
       upload.save!
@@ -33,6 +39,8 @@ class UploadProcessingWorker
 
     upload.processed = true
     upload.save!
+
+    logger.info("Completed processing upload (upload_id: #{upload.id})")
   end
 
   private def handle_tgz_upload(upload)
@@ -52,7 +60,13 @@ class UploadProcessingWorker
     gunzip_cmd = "gunzip #{upload.full_path} -c > #{extracted_path}"
     gunzip_output = `#{gunzip_cmd}`
 
-    handle_single_capture(upload, upload.original_file_name, extracted_path)
+    # Establish the file name without a .gz suffix.
+    extracted_original_file_name = upload.original_file_name.gsub(/\.gz$/m, '')
+
+    handle_single_capture(upload, extracted_original_file_name, extracted_path)
+
+    # Remove extracted file.
+    FileUtils.rm(extracted_path)
   end
 
   private def handle_pkt_upload(upload)
@@ -85,6 +99,9 @@ class UploadProcessingWorker
       upload.save!
     end
 
+    logger.info("Identified #{archived_file_paths.length} potential captures in archive" <<
+      " (upload_id: #{upload.id})")
+
     archived_file_paths.each do |archived_file_path|
       original_file_name = archived_file_path.split('/').last
       handle_single_capture(upload, original_file_name, archived_file_path)
@@ -99,7 +116,8 @@ class UploadProcessingWorker
 
     # Ensure we have an acceptable file type.
     if Capture.infer_file_type(file_path).nil?
-      # TODO logging
+      logger.warn("File type could not be inferred" <<
+        " (upload_id: #{upload.id}; file_path: #{file_path})")
 
       FileUtils.rm(file_path)
       return
@@ -109,7 +127,7 @@ class UploadProcessingWorker
     begin
       parser = WOW::Capture::Parser.new(file_path)
     rescue StandardError => e
-      # TODO logging
+      logger.warn("Failed to load capture in parser: #{e.to_s} (upload_id: #{upload.id})")
 
       FileUtils.rm(file_path)
       return
