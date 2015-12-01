@@ -39,6 +39,9 @@
   margin-bottom: 15px;
 }
 
+
+/* Fact Widget ********************************************************************************** */
+
 .facts .fact-block {
   background: #fff;
   border-radius: 4px;
@@ -75,4 +78,55 @@
 
 .facts table .fact-value .content {
 
+}
+
+
+/* Uploader ************************************************************************************* */
+
+.uploader .upload-target {
+  padding: 30px;
+  font-size: 14px;
+  font-family: Arial;
+  background: #f4f4f4;
+  border: 2px solid #f4f4f4;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+
+.uploader .upload-target p {
+  background: #fff;
+  padding: 10px;
+  margin: 0;
+  border-radius: 4px 4px 0 0;
+}
+
+.uploader .upload-target.dragover {
+  border-color: #aaa;
+}
+
+.uploader .upload-queue {
+  margin-top: 0;
+  background: #fff;
+  border-radius: 0 0 4px 4px;
+}
+
+.uploader .upload-queue.hidden {
+  display: none;
+}
+
+.uploader .upload-queue .table {
+  margin: 0;
+}
+
+.uploader .upload-queue .file-name {
+  width: 70%;
+  font-weight: bold;
+}
+
+.uploader .upload-queue .file-size {
+  width: 15%;
+}
+
+.uploader .upload-queue .upload-progress {
+  width: 15%;
 }

@@ -11,8 +11,11 @@
  * file per style scope.
  *
  *= require_self
- *=
+ *
  *= require vendor
- *=
- *= require_tree .
+ *
+ *= require global
+ *= require forms
+ *
+ *= require_tree ./sections
  */

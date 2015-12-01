@@ -10,76 +10,8 @@
   </div>
 
   <% if current_user? %>
-    <div class="page-section upload-target">
-      <p>
-        Drag sniff files here to upload to SniffHub.
-      </p>
-
-      <div class="upload-queue hidden">
-        <template>
-          <div class="upload">
-            <form action="<%= LIFTER_URL %>" method="POST" enctype="multipart/form-data" data-upload-param="upload">
-              <div class="metadata">
-                <input type="hidden" name="uploader_token" value="<%= current_user.uploader_token %>" />
-              </div>
-
-              <table class="table">
-                <tr>
-                  <td class="file-name">
-                    Loading...
-                  </td>
-
-                  <td class="file-size">
-                    0
-                  </td>
-
-                  <td class="upload-progress">
-                    0%
-                  </td>
-                </tr>
-              </table>
-            </form>
-          </div>
-        </template>
-      </div>
-    </div>
-  <% end %>
-
-  <% if current_user? %>
-    <div class="page-section recent-uploads">
-      <h3>
-        Recent Uploads
-      </h3>
-
-      <table class="table table-striped">
-        <th>
-          Uploaded At
-        </th>
-
-        <th>
-          File Name
-        </th>
-
-        <th>
-          Contained Sniffs
-        </th>
-
-        <% current_user.uploads.order('created_at DESC').each do |upload| %>
-          <tr>
-            <td>
-              <%= upload.created_at %>
-            </td>
-
-            <td>
-              <%= link_to(upload.original_file_name, "/uploads/#{upload.id}") %>
-            </td>
-
-            <td>
-              <%= upload.captures.count %>
-            </td>
-          </tr>
-        <% end %>
-      </table>
-    </div>
+    <%= render(partial: 'welcome/home') %>
+  <% else %>
+    <%= render(partial: 'welcome/welcome') %>
   <% end %>
 </div>
